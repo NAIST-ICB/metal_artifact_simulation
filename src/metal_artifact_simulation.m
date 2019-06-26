@@ -1,17 +1,16 @@
 function sim = metal_artifact_simulation(image, x_metal, config)
 %METAL_ARTIFACT_SIMULATION 
-% simulate metal artifact using given image and metal
+%   simulate metal artifact using given image and metal
 
     % parse arguments
-    data = config.xray_characteristic_data;
+    data = config.data;
     energy_composition = config.energy_composition;
     E0 = config.E0;
     mu_air = config.mu_air;
-    metal_idx = config.metal_idx;
+    metal_name = config.metal_name;
     metal_density = config.metal_density;
     T1 = config.T1;
     T2 = config.T2;
-
     noise_scale = config.noise_scale;
     filter_name = config.filter_name;
     freqscale = config.freqscale;
@@ -23,9 +22,9 @@ function sim = metal_artifact_simulation(image, x_metal, config)
     pixel_size = config.pixel_size;
     output_size = config.output_size;
 
-    m0_water = data(E0, 2); 
-    m0_bone = data(E0, 3);
-    m0_metal = data(E0, metal_idx);
+    m0_water = data{E0, 'Water'};
+    m0_bone = data{E0, 'Bone'};
+    m0_metal = data{E0, metal_name};    
     mu_water0 = m0_water * 1.0;
     mu_metal0 = m0_metal * metal_density;
 
@@ -64,11 +63,10 @@ function sim = metal_artifact_simulation(image, x_metal, config)
     for ii = 1:numel(energy_composition)
         energy = energy_composition(ii);
 
-        m_water = data(energy, 2); 
-        m_bone = data(energy, 3); 
-        m_metal = data(energy, metal_idx); 
-        intensity = data(energy, 6);
-
+        m_water = data{energy, 'Water'};
+        m_bone = data{energy, 'Bone'};
+        m_metal = data{energy, metal_name};
+        intensity = data{energy, 'Intensity'};
         d_water_tmp = d_water*(m_water/m0_water);
         d_bone_tmp = d_bone*(m_bone/m0_bone);
         d_metal_tmp = d_metal*(m_metal/m0_metal);

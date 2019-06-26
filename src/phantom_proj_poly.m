@@ -8,7 +8,7 @@ function p = phantom_proj_poly(phantom, config)
     angle_size = config.angle_size;
     angle_num = config.angle_num;
     pixel_size = config.pixel_size;  
-    data = config.xray_characteristic_data;
+    data = config.data;
     E0 = config.E0;
     energy_composition = config.energy_composition;  
 
@@ -23,12 +23,14 @@ function p = phantom_proj_poly(phantom, config)
     % Energy Composition
     total_intensity = 0;
     v = zeros(size(d_water, 1), size(d_water, 2), numel(energy_composition));
-    m0_water = data(E0, 2); 
+    
+    m0_water = data{E0, 'Water'};
+
     for ii = 1:numel(energy_composition)
         energy = energy_composition(ii);
-            
-        m_water = data(energy, 2);
-        intensity = data(energy, 6); 
+
+        m_water = data{energy, 'Water'};
+        intensity = data{energy, 'Intensity'};
         d_water_tmp = d_water*(m_water/m0_water);
         DRR = d_water_tmp;
         y = intensity * (exp(-DRR));
