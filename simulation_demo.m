@@ -8,7 +8,7 @@ addpath('.\src');
 addpath('.\utils');
 
 %% Load images
-load('./sample_data/sample_1.mat'); % load "sample" valuable
+load('./sample_data/sample_2.mat'); % load "sample" valuable
 image = sample.image;
 metal = sample.metal;
 pixel_size = sample.pixel_size; % [cm]
